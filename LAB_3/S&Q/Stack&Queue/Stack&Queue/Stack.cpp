@@ -34,7 +34,12 @@ void Stack::pushPoint(Point p) {
     element* e = new element(p);
     this->ll->InsertTail(e);
 }
-//Point Stack::popPoint() {
-//    int p = this->ll->Gettail()->GetPoint();
-//    return p;
-//}
+Point Stack::popPoint() {
+    if (this->ll->isEmpty()) {
+        cout << "STACK RONG";
+        return Point(-1, -1);
+    }
+    Point p = this->ll->Gethead()->GetPoint(); 
+        this->ll->DeleteFirst(); 
+        return p;
+}
