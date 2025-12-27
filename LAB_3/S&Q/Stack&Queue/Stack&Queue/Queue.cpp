@@ -27,3 +27,21 @@ Queue::~Queue()
 {
     //dtor
 }
+bool Queue::isEmpty() {
+    return this->ll->Gethead() == nullptr;
+}
+
+void Queue::enqueuePoint(Point p) {
+    element* e = new element(p);
+    this->ll->InsertTail(e);
+}
+
+Point Queue::dequeuePoint() {
+    if (ll->isEmpty()) {
+        cout << "Queue Rong";
+        return Point(-1, -1);
+    }
+    Point p = this->ll->Gethead()->GetPoint();
+    this->ll->DeleteFirst();
+    return p;
+}

@@ -1,6 +1,6 @@
 ﻿#include"Stack.h"
 #include"Queue.h"
-
+#include"Matrix.h"
 using namespace std;
 void toBinary(int n) {
 	Stack s;
@@ -14,71 +14,130 @@ void toBinary(int n) {
 	}
 	s.printStack();
 }
-void cau1() {
-	int m = 5, n = 5;
-	int maze[5][5] = {
-		{1, 0, 1, 1, 1},
-		{1, 1, 1, 0, 1},
-		{0, 0, 1, 0, 0},
-		{1, 1, 1, 1, 0},
-		{1, 0, 0, 1, 1}
-	};
-	Point start(0, 0);
-	Point end(4, 4);
+void printPath(Point start, Point end, Point** parent) {
+	Stack pathStack;
+	Point temp = end;
 
-	if (maze[start.getX()][start.getY()] == 0) {
-		cout << "Khong co duong di" << endl;
-		return;
+
+	while (!(temp.getX() == start.getX() && temp.getY() == start.getY())) {
+		pathStack.pushPoint(temp);
+		temp = parent[temp.getX()][temp.getY()];
 	}
-	Stack s;
-	bool visited[5][5] = { false };
-	Point parent[5][5];
-	bool found = false;
-	int dx[] = { 0, 1, 0, -1 };
-	int dy[] = { 1, 0, -1, 0 };
+	pathStack.pushPoint(start);
 
+	
+	cout << "Duong di: ";
+	while (!pathStack.isEmpty()) {
+		Point p = pathStack.popPoint();
+		cout << "(" << p.getX() << "," << p.getY() << ")";
+		if (!pathStack.isEmpty()) cout << " -> ";
+	}
+	cout << endl;
+}
+void findByStack(Matrix& maze, Point start, Point end) {
+	int r = maze.getRows();
+	int c = maze.getCols();
+
+	bool** visited = new bool* [r];
+	Point** parent = new Point * [r];
+	for (int i = 0; i < r; i++) {
+		visited[i] = new bool[c] {false};
+		parent[i] = new Point[c];
+	}
+
+	Stack s;
 	s.pushPoint(start);
 	visited[start.getX()][start.getY()] = true;
+	bool found = false;
+
+	int dx[] = { 1, 0, -1, 0 };
+	int dy[] = { 0, 1, 0, -1 };
+
 	while (!s.isEmpty()) {
-		Point current = s.popPoint();
-		if (current.getX() == end.getX() && current.getY() == end.getY()) {
+		Point curr = s.popPoint();
+
+		if (curr.getX() == end.getX() && curr.getY() == end.getY()) {
 			found = true;
 			break;
-		}	
+		}
+
 		for (int i = 0; i < 4; i++) {
-			int nx = current.getX() + dx[i];
-			int ny = current.getY() + dy[i];
-			if (nx >= 0 && nx < m && ny>=0 && ny < n && maze[nx][ny] == 1 && visited[nx][ny] != true) {
-				visited[nx][ny] = true;
-				parent[nx][ny] = current;
-				s.pushPoint(Point(nx, ny));
+			Point next(curr.getX() + dx[i], curr.getY() + dy[i]);
+			if (maze.isValid(next) && !visited[next.getX()][next.getY()]) {
+				visited[next.getX()][next.getY()] = true;
+				parent[next.getX()][next.getY()] = curr;
+				s.pushPoint(next);
 			}
 		}
 	}
+
 	if (found) {
-		cout << "DFS tim thay duong di:" << endl;
-
-		// Dùng một Stack khác để đảo ngược đường đi từ parent (từ đích về đầu) thành (từ đầu đến đích)
-		Stack pathStack;
-		Point temp = end;
-		while (!(temp.getX() == start.getX() && temp.getY() == start.getY())) {
-			pathStack.pushPoint(temp);
-			temp = parent[temp.getX()][temp.getY()];
-		}
-		pathStack.pushPoint(start);
-
-		// In danh sách tọa độ
-		while (!pathStack.isEmpty()) {
-			Point p = pathStack.popPoint();
-			cout << "(" << p.getX() << "," << p.getY() << ")";
-			if (!pathStack.isEmpty()) cout << " -> ";
-		}
-		cout << endl;
+		cout << "STACK (DFS): Tim thay duong di!" << endl;
+		printPath(start, end, parent);
 	}
 	else {
-		cout << "Khong tim thay duong di bang DFS!" << endl;
+		cout << "STACK (DFS): Khong tim thay duong di." << endl;
+	}
+	for (int i = 0; i < r; i++) { delete[] visited[i]; delete[] parent[i]; }
+	delete[] visited; delete[] parent;
+}
+void findByQueue(Matrix& maze, Point start, Point end) {
+	int r = maze.getRows();
+	int c = maze.getCols();
+
+	bool** visited = new bool* [r];
+	Point** parent = new Point * [r];
+	for (int i = 0; i < r; i++) {
+		visited[i] = new bool[c] {false};
+		parent[i] = new Point[c];
 	}
 
+	Queue q;
+	q.enqueuePoint(start);
+	visited[start.getX()][start.getY()] = true;
+	bool found = false;
+
+	int dx[] = { 0, 1, 0, -1 };
+	int dy[] = { 1, 0, -1, 0 };
+
+	while (!q.isEmpty()) {
+		Point curr = q.dequeuePoint();
+
+		if (curr.getX() == end.getX() && curr.getY() == end.getY()) {
+			found = true;
+			break;
+		}
+
+		for (int i = 0; i < 4; i++) {
+			Point next(curr.getX() + dx[i], curr.getY() + dy[i]);
+			if (maze.isValid(next) && !visited[next.getX()][next.getY()]) {
+				visited[next.getX()][next.getY()] = true;
+				parent[next.getX()][next.getY()] = curr;
+				q.enqueuePoint(next);
+			}
+		}
+	}
+
+	if (found) {
+		cout << "QUEUE (BFS): Tim thay duong ngan nhat!" << endl;
+		printPath(start, end, parent);
+	}
+	else {
+		cout << "QUEUE (BFS): Khong tim thay duong di." << endl;
+	}
+	for (int i = 0; i < r; i++) { delete[] visited[i]; delete[] parent[i]; }
+	delete[] visited; delete[] parent;
+}
+void cau1() {
+	int m = 10, n = 10;
+	Matrix maze(m, n);
+	maze.generateRandom(0.2);
+
+	Point start(0, 0);
+	Point end(9, 9);
+	maze.printMatrix();
+	findByStack(maze, start, end);
+	findByQueue(maze, start, end);
 }
 int main() {
 	/*Stack s;
@@ -99,5 +158,4 @@ int main() {
 
 	//toBinary(11);
 	cau1();
-
 }

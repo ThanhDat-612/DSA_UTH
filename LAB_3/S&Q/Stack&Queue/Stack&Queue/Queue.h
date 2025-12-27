@@ -11,10 +11,11 @@ class Queue
 		Queue();
 		virtual ~Queue();
 		void enqueue(int);
-		void enqueue(Point);
-
+		void enqueuePoint(Point);
+		Point dequeuePoint();
 		int dequeue();
 		void printQueue();
+		bool isEmpty();
 
 };
 
