@@ -16,6 +16,7 @@ class Queue
 		int dequeue();
 		void printQueue();
 		bool isEmpty();
-
+		int front();//phan tu dau tien
+		int last();// phan tu cuoi cung
 };
 

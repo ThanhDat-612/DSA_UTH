@@ -16,6 +16,8 @@ public:
     int pop();
     void printStack();
     bool isEmpty();
+    int top();//phan tu cuoi cung
+    int bot();//phan tu dau tien
 };
 
 #endif // STACK_H

@@ -45,3 +45,11 @@ Point Queue::dequeuePoint() {
     this->ll->DeleteFirst();
     return p;
 }
+int Queue::front() {
+    if (isEmpty()) return -1;
+    return ll->Gethead()->Getdata();
+}
+int Queue::last(){
+    if (isEmpty()) return -1;
+    return ll->Gettail()->Getdata();
+}

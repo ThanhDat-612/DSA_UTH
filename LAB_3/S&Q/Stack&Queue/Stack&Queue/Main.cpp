@@ -136,9 +136,48 @@ void cau1() {
 	Point start(0, 0);
 	Point end(9, 9);
 	maze.printMatrix();
-	findByStack(maze, start, end);
+	findByStack(maze, start, end); 
 	findByQueue(maze, start, end);
 }
+void cau2() {
+	Queue A;
+	Stack B;
+	Queue C;
+	int n;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		A.enqueue(i);
+	}
+	for (int i = 1; i <= n; i++) {
+		int t;
+		cin >> t;
+		C.enqueue(t);
+	}
+	
+	while (!C.isEmpty()) {
+		if (!B.isEmpty() && B.top() == C.front()) {
+			cout << "B->C"<<endl;
+			C.dequeue();
+			B.pop();
+		}
+		else if (!A.isEmpty()) {
+			int t = A.dequeue();
+			if (t == C.front()) {
+				cout << "A->C" << endl;
+				C.dequeue();
+			}
+			else {
+				cout << "A->B" << endl;
+				B.push(t);
+			}
+		}
+		else {
+			cout << "Khong the hoan thanh" << endl;
+			break;
+		}
+	}
+}
+
 int main() {
 	/*Stack s;
 	Queue q;
@@ -157,5 +196,6 @@ int main() {
 	//q.printQueue();
 
 	//toBinary(11);
-	cau1();
+	//cau1();
+	cau2();
 }

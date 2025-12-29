@@ -2,7 +2,7 @@
 
 void Stack::push(int x) {
     element* p = new element(x);
-    this->ll->InsertFirst(p);
+    this->ll->InsertTail(p);
 }
 int Stack::pop() {
     if (ll->isEmpty()) {
@@ -42,4 +42,12 @@ Point Stack::popPoint() {
     Point p = this->ll->Gethead()->GetPoint(); 
         this->ll->DeleteFirst(); 
         return p;
+}
+int Stack::top() {
+    if (isEmpty()) return -1;
+    return ll->Gettail()->Getdata();
+}
+int Stack::bot() {
+    if (isEmpty()) return -1;
+    return ll->Gethead()->Getdata();
 }
