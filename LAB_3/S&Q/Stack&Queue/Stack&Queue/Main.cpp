@@ -1,6 +1,7 @@
 ﻿#include"Stack.h"
 #include"Queue.h"
 #include"Matrix.h"
+#include"Graph.h"
 using namespace std;
 void toBinary(int n) {
 	Stack s;
@@ -49,6 +50,10 @@ void findByStack(Matrix& maze, Point start, Point end) {
 	s.pushPoint(start);
 	visited[start.getX()][start.getY()] = true;
 	bool found = false;
+	if (maze.getElement(start.getX(), start.getY()) == 0) {
+		cout << "Khong co cach di" << endl;
+		return;
+	}
 
 	int dx[] = { 1, 0, -1, 0 };
 	int dy[] = { 0, 1, 0, -1 };
@@ -96,7 +101,10 @@ void findByQueue(Matrix& maze, Point start, Point end) {
 	q.enqueuePoint(start);
 	visited[start.getX()][start.getY()] = true;
 	bool found = false;
-
+	if (maze.getElement(start.getX(), start.getY()) == 0) {
+		cout << "Khong co cach di" << endl;
+		return;
+	}
 	int dx[] = { 0, 1, 0, -1 };
 	int dy[] = { 1, 0, -1, 0 };
 
@@ -133,7 +141,7 @@ void cau1() {
 	Matrix maze(m, n);
 	maze.generateRandom(0.2);
 
-	Point start(0, 0);
+	Point start(1, 0);
 	Point end(9, 9);
 	maze.printMatrix();
 	findByStack(maze, start, end); 
@@ -177,6 +185,78 @@ void cau2() {
 		}
 	}
 }
+void cau3() {
+	Queue A;
+	Queue B;
+	Queue C;
+	int n;
+	cin >> n;
+	for (int i = 1; i <= n; i++) {
+		A.enqueue(i);
+	}
+	for (int i = 1; i <= n; i++) {
+		int t;
+		cin >> t;
+		C.enqueue(t);
+	}
+
+	while (!C.isEmpty()) {
+		if (!B.isEmpty() && B.front() == C.front()) {
+			cout << "B->C" << endl;
+			C.dequeue();
+			B.dequeue();
+		}
+		else if (!A.isEmpty()) {
+			int t = A.dequeue();
+			if (t == C.front()) {
+				cout << "A->C" << endl;
+				C.dequeue();
+			}
+			else {
+				cout << "A->B" << endl;
+				B.enqueue(t);
+			}
+		}
+		else {
+			cout << "Khong the hoan thanh" << endl;
+			break;
+		}
+	}
+}
+void cau4() {
+	Graph g(9);
+	Node n0(element(0));
+	Node n1(element(1));
+	Node n2(element(2));
+	Node n3(element(3));
+	Node n4(element(4));
+	Node n5(element(5));
+	Node n6(element(6));
+	Node n7(element(7));
+	Node n8(element(8));
+
+	g.addEdge(Edge(n0,n1));
+	g.addEdge(Edge(n0, n3));
+	g.addEdge(Edge(n0, n8));
+
+	g.addEdge(Edge(n1, n7));
+
+	g.addEdge(Edge(n2, n7));
+	g.addEdge(Edge(n2, n3));
+	g.addEdge(Edge(n2, n5));
+
+	g.addEdge(Edge(n3, n4));
+
+	g.addEdge(Edge(n4, n8));
+
+	g.addEdge(Edge(n5, n6));
+
+	g.printGraph();
+
+	g.BFS(n0.getId());
+	g.DFS(n0.getId());
+
+}
 
 int main() {
 	/*Stack s;
@@ -197,5 +277,7 @@ int main() {
 
 	//toBinary(11);
 	//cau1();
-	cau2();
+	//cau2();
+	//cau3();
+	//cau4();
 }

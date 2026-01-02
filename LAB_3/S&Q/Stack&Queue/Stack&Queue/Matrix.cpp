@@ -31,7 +31,7 @@ bool Matrix::isValid(Point p) {
 void Matrix::printMatrix() {
 	for (int i = 0; i < rows; i++) {
 		for (int j = 0; j < cols; j++) {
-			cout << data[i][j] << " ";
+			cout << data[j][i] << " ";
 		}
 		cout << endl;
 	}

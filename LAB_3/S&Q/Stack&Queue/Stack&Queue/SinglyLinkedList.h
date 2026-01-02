@@ -21,7 +21,6 @@ public:
     void Traversal();
     bool DeleteTail();
     bool isEmpty();
-
 protected:
 
 

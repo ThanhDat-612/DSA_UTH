@@ -21,9 +21,10 @@
   <PropertyGroup Label="Globals">
     <VCProjectVersion>18.0</VCProjectVersion>
     <Keyword>Win32Proj</Keyword>
-    <ProjectGuid>{dfc973a1-e1f7-46f1-8b83-a1efd02072fd}</ProjectGuid>
-    <RootNamespace>StackQueue</RootNamespace>
+    <ProjectGuid>{c889c79f-c2df-4f4d-8f6c-f204d0ccf1c9}</ProjectGuid>
+    <RootNamespace>BinaryTree</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>BinarySearchTree</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
@@ -127,27 +128,13 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="Edge.cpp" />
-    <ClCompile Include="ELement.cpp" />
-    <ClCompile Include="Graph.cpp" />
-    <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="Node.cpp" />
-    <ClCompile Include="Point.cpp" />
-    <ClCompile Include="Queue.cpp" />
-    <ClCompile Include="SinglyLinkedList.cpp" />
+    <ClCompile Include="BST.cpp" />
     <ClCompile Include="Main.cpp" />
-    <ClCompile Include="Stack.cpp" />
+    <ClCompile Include="Node.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Edge.h" />
-    <ClInclude Include="ELement.h" />
-    <ClInclude Include="Graph.h" />
-    <ClInclude Include="Matrix.h" />
+    <ClInclude Include="BST.h" />
     <ClInclude Include="Node.h" />
-    <ClInclude Include="Point.h" />
-    <ClInclude Include="Queue.h" />
-    <ClInclude Include="SinglyLinkedList.h" />
-    <ClInclude Include="Stack.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

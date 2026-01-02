@@ -5,7 +5,7 @@ void Stack::push(int x) {
     this->ll->InsertTail(p);
 }
 int Stack::pop() {
-    if (ll->isEmpty()) {
+    if (this->isEmpty()) {
         cout << "STACK RONG, KHONG LAY DUOC PHAN TU";
         return -1;
     }

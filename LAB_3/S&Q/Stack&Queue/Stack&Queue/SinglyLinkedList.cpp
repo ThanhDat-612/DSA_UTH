@@ -1,4 +1,4 @@
-#include "SinglyLinkedList.h"
+﻿#include "SinglyLinkedList.h"
 using namespace std;
 linkedlist::linkedlist()
 {
@@ -23,6 +23,8 @@ void linkedlist::InsertFirst(element* e) {
 
 }
 void linkedlist::InsertTail(element* e) {
+    if (e == nullptr) return;
+    e->Setpointer(nullptr);
     if (this->head == nullptr)
         this->head = this->tail = e;
     else {
@@ -54,6 +56,10 @@ bool linkedlist::isEmpty() {
 
 bool linkedlist::DeleteTail() {
     if (this->head == nullptr) return false;
+    if (this->head == this->tail) { // Trường hợp chỉ có 1 phần tử
+        delete this->head;
+        this->head = this->tail = nullptr;
+    }
     else {
         element* p = this->head;
         while (p->Getpointer() != this->tail) {
