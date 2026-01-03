@@ -26,8 +26,20 @@ int main()
     n = new Node(15);
     tree->InsertNode(n);
 
-    tree->TravelNLR();
     tree->TravelLNR();
-    tree->TravelLRN();
+    cout << "------------" << endl;
+    Node* nodeDelete = tree->search_x(9);
+    tree->deleteNode(nodeDelete);
+    tree->TravelLNR();
+    cout << "------------" << endl;
+    cout << tree->sumTree();
+    cout << tree->findMax();
+    cout << tree->findMin();
+    cout << "------------" << endl;
+    cout << tree->GetnumNode();
+    cout << tree->countLeaf();
+    //tree->display();
+    
+
     return 0;
 }
