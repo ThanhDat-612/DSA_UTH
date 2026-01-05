@@ -29,8 +29,11 @@ bool BST::InsertNode(Node* n) {
             if (p->Getkey() < n->Getkey())
                 p = p->Getright();
             else
-                if (p->Getkey() == n->Getkey())
+                if (p->Getkey() == n->Getkey()) {
+                    p->IncrementCount();
                     return false;
+                }
+                    
     }
 
     if (T->Getkey() > n->Getkey())
@@ -46,8 +49,11 @@ bool BST::InsertNodeRe(Node* root, Node* p) {
         root = p;
         return true;
     }
-    if (root->Getkey() == p->Getkey())
+    if (root->Getkey() == p->Getkey()) {
+        p->IncrementCount();
         return false;
+    }
+        
     else if (root->Getkey() > p->Getkey())
         return InsertNodeRe(root->Getleft(), p);
     else return InsertNodeRe(root->Getright(), p);
@@ -224,4 +230,73 @@ int BST::countLeaf() {
             q.push(curr->Getright());
     }
     return count;
+}
+
+void BST::printFrequency(Node* r) {
+    if (r != nullptr) {
+        printFrequency(r->Getleft());
+        cout << r->Getkey() <<" - Freq: "<< r->Getcount()<< "\n";
+        printFrequency(r->Getright());
+    }
+}
+
+int BST::getHeight(Node* r) {
+    if (r== nullptr) return 0;
+    int leftHeight = getHeight(r->Getleft());
+    int rightHeight = getHeight(r->Getright());
+    return 1 + max(leftHeight,rightHeight);
+}
+
+int BST::sumLevel(Node* r, int k) {
+    if (r == nullptr || k < 0) return 0;
+    if (k == 0) return r->Getkey();
+    return sumLevel(r->Getleft(), k - 1) + sumLevel(r->Getright(), k - 1);
+}
+bool BST::isPrime(int n) {
+    if (n < 2) return false;
+    if (n == 2) return true;
+    if (n % 2 == 0) return false;
+    for (int i = 3; i*i <= n; i+=2) {
+        if (n % i == 0) return false;
+    }
+    return true;
+}
+int BST::numPrimeOfTree() {
+    if (this->root == nullptr) return 0;
+    queue<Node*> q;
+    int count = 0;
+    q.push(this->root);
+
+    while (!q.empty()) {
+        Node* curr = q.front();
+        q.pop();
+        if (isPrime(curr->Getkey()) == true) count++;
+        if (curr->Getleft() != nullptr)
+            q.push(curr->Getleft());
+        if (curr->Getright() != nullptr)
+            q.push(curr->Getright());
+    }
+    return count;
+}
+void BST::deletePrime() {
+    if (this->root == nullptr) return;
+    queue<Node*> q;
+    vector<Node*> temp;
+    q.push(this->root);
+
+    while (!q.empty()) {
+        Node* curr = q.front();
+        q.pop();
+        if (isPrime(curr->Getkey()) == true) temp.push_back(curr);
+        if (curr->Getleft() != nullptr)
+            q.push(curr->Getleft());
+        if (curr->Getright() != nullptr)
+            q.push(curr->Getright());
+    }
+    for (Node* n : temp) {
+        Node* target = search_x(n->Getkey());
+        if (target != nullptr) {
+            deleteNode(target);
+        }
+    }
 }

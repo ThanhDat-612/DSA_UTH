@@ -8,7 +8,7 @@ private:
     Node* root;
     int sum = 0;
     int numNode = 0;
-
+    int height=0;
 public:
     BST();
     virtual ~BST();
@@ -32,6 +32,12 @@ public:
     int findMin();
     int GetnumNode();
     int countLeaf();
+    void printFrequency(Node*);
+    int getHeight(Node*);
+    int sumLevel(Node*, int);
+    bool isPrime(int);
+    int numPrimeOfTree();
+    void deletePrime();
 protected:
 
 

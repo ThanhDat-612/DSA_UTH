@@ -38,8 +38,21 @@ int main()
     cout << "------------" << endl;
     cout << tree->GetnumNode();
     cout << tree->countLeaf();
-    //tree->display();
-    
 
+    cout << tree->getHeight(tree->Getroot())<<"\n";
+    //tree->display();
+    int level = 1;
+    int sumLevel_1 = tree->sumLevel(tree->Getroot(), level);
+    cout << sumLevel_1;
+    cout << tree->numPrimeOfTree();
+    tree->deletePrime();
+    tree->TravelLNR();
+   /* int numbers[] = { 10, 19, 9, 3, 19, 8, 4, 1, 15, 10, 10 };
+    BST* t=new BST();
+    for (int i = 0; i < 11; i++) {
+        t->InsertNode(new Node(numbers[i]));
+    }
+    cout << "So phan tu phan biet: " << t->GetnumNode()<<endl;
+    t->printFrequency(t->Getroot());*/
     return 0;
 }

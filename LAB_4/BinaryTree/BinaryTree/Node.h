@@ -9,6 +9,7 @@ private:
     Node* right;
     Node* parent;
     int key;
+    int count;
 public:
     Node();
     Node(int);
@@ -22,7 +23,8 @@ public:
     void Setparent(Node* val) { parent = val; }
     int Getkey() { return key; }
     void Setkey(int val) { key = val; }
-
+    int Getcount() { return count; }
+    void IncrementCount() { count++; }
 protected:
 
 
