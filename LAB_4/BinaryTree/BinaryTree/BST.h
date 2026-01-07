@@ -8,7 +8,7 @@ private:
     Node* root;
     int sum = 0;
     int numNode = 0;
-    int height=0;
+    //int height=0;
 public:
     BST();
     virtual ~BST();

@@ -33,7 +33,6 @@ bool BST::InsertNode(Node* n) {
                     p->IncrementCount();
                     return false;
                 }
-                    
     }
 
     if (T->Getkey() > n->Getkey())
@@ -42,7 +41,6 @@ bool BST::InsertNode(Node* n) {
 
     n->Setparent(T);
     return true;
-
 }
 bool BST::InsertNodeRe(Node* root, Node* p) {
     if (root == nullptr) {
@@ -196,6 +194,7 @@ int BST::findMax() {
     return r->Getkey();
 }
 int BST::GetnumNode() {
+    this->numNode = 0;
     if (this->root == nullptr) return 0;
     queue<Node*> q;
     q.push(this->root);
