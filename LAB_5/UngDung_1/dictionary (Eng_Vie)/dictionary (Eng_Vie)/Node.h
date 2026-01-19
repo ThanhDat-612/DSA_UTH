@@ -1,0 +1,43 @@
+#pragma once
+#include<string>
+using namespace std;
+
+#ifndef NODE_H
+#define NODE_H
+
+class Node
+{
+public:
+    Node();
+    Node(string k, string m);
+    //Node(int);
+    virtual ~Node();
+
+    Node* Getleft() { return left; }
+    void Setleft(Node* val) { left = val; }
+    Node* Getright() { return right; }
+    void Setright(Node* val) { right = val; }
+    Node* Getparent() { return parent; }
+    void Setparent(Node* val) { parent = val; }
+    string Getkey() { return key; }
+    void Setkey(int val) { key = val; }
+    int Getheight() { return height; }
+    void Setheight(int val) { height = val; }
+    void IncrementCount() { count++; }
+    int getCount() { return count; }
+    string getMean() { return meaning; }
+    void setMean(string m) { meaning = m; }
+protected:
+
+private:
+    Node* left;
+    Node* right;
+    Node* parent;
+    // int bal; // -1 0 1
+    string key;
+    string meaning;
+    int height;
+    int count;
+};
+
+#endif // NODE_H
