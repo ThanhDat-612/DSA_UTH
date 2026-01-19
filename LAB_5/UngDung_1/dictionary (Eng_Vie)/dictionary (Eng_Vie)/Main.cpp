@@ -1,8 +1,31 @@
 ﻿#include <iostream>
+#include<fstream>
 #include"Dictionary.h"
+void loadDataFromFile(Dictionary& dict, string fileName) {
+    ifstream file(fileName);
+    if (!file.is_open()) {
+        cout << "Khong the mo file " << fileName << "!" << endl;
+        return;
+    }
+
+    string line;
+    int count = 0;
+    while (getline(file, line)) {
+        size_t pos = line.find(':');
+        if (pos != string::npos) {
+            string word = line.substr(0, pos);
+            string mean = line.substr(pos + 1);
+            dict.add(word, mean); // Sử dụng hàm add có sẵn của Dictionary
+            count++;
+        }
+    }
+    file.close();
+    cout << "Da nap thanh cong " << count << " tu vao tu dien." << endl;
+}
 int main()
 {
     Dictionary dict;
+    loadDataFromFile(dict, "data.txt");
     int choice;
     string w, d;
     while (true) {

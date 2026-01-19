@@ -1,0 +1,20 @@
+Apple:Qua tao
+Banana:Qua chuoi
+Cat:Con meo
+Dog:Con cho
+Elephant:Con voi
+Flower:Bong hoa
+Green:Mau xanh la
+Happy:Hanh phuc
+Ice:Bang tan
+Jump:Nhay
+King:Vua
+Lion:Su tu
+Mountain:Ngon nui
+Night:Ban dem
+Orange:Qua cam
+Piano:Dan piano
+Queen:Nu hoang
+River:Dong song
+Sun:Mat troi
+Tree:Cai cay
