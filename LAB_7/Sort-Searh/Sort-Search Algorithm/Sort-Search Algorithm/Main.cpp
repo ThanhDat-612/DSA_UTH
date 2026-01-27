@@ -1,8 +1,11 @@
 ﻿#include <iostream>
 #include<fstream>
 #include<vector>
+#include<time.h>
+#include<chrono>
+using namespace std::chrono;
 using namespace std;
-#define MAX 1000
+#define MAX 10000
 void Swap(int& a, int& b) {
     if (&a == &b) return;
     int temp = a;
@@ -307,12 +310,21 @@ int main()
     for (int i = 0; i < N; i++) {
         arr[i] = a[i];
     }
+
+    auto start = high_resolution_clock::now();
+
     MergeSort(arr, N, 1);
+
+    auto end = high_resolution_clock::now();
+    auto duration = duration_cast<milliseconds>(end - start);
+
 
     cout << "Day sau khi sap xep: ";
     for (int i = 0; i < N; i++) {
         cout << arr[i]<<" ";
     }
+    cout << endl;
+    cout << "Time: " << duration.count() << " ms\n";
 }
 
 
