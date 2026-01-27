@@ -2,12 +2,18 @@
 #include<fstream>
 #include<vector>
 using namespace std;
-
-void Swap(int& a, int& b)
-{
-    a = a + b;
-    b = a - b;
-    a = a - b;
+#define MAX 1000
+void Swap(int& a, int& b) {
+    if (&a == &b) return;
+    int temp = a;
+    a = b;
+    b = temp;
+}
+void QuickSwap(int& a, int& b, long long& countAssignment) {
+    int temp = a;
+    a = b;
+    b = temp;
+    countAssignment += 3;
 }
 
 void SelectionSort(int a[], int N, bool isAscending) { //Ghi chú: tại sao không sử dụng kí hiệu & trong hàm này? 
@@ -119,7 +125,7 @@ void HeapSort(int a[], int N,bool isAscending) {
         ReverseArray(a, N);
     }
 }
-void QuickSort(int a[], int left, int right) {
+void QuickSort_1(int a[], int left, int right) {
     int i, j, x;
     // ĐIỀU KIỆN DỪNG: Nếu phân đoạn chỉ có 1 phần tử hoặc rỗng thì không cần sắp xếp
     if (left >= right) {
@@ -133,7 +139,7 @@ void QuickSort(int a[], int left, int right) {
 
     // BƯỚC 2: PHÂN HOẠCH (PARTITION)
     // Mục tiêu: Đưa các số nhỏ hơn x về bên trái, các số lớn hơn x về bên phải
-    while (i < j) {
+    while (i <= j) {
         // Tìm phần tử bên trái nhưng lại lớn hơn hoặc bằng chốt (sai vị trí)
         while (a[i] < x) {
             i++;
@@ -153,11 +159,131 @@ void QuickSort(int a[], int left, int right) {
     // Sau vòng lặp trên, mảng được chia làm 2 phần: [left...j] và [i...right]
 
     // Gọi đệ quy để sắp xếp phân đoạn bên trái (các phần tử nhỏ hơn hoặc bằng chốt)
-    QuickSort(a, left, j);
+    QuickSort_1(a, left, j);
     // Gọi đệ quy để sắp xếp phân đoạn bên phải (các phần tử lớn hơn hoặc bằng chốt)
-    QuickSort(a, i, right);
+    QuickSort_1(a, i, right);
+}
+void QuickSort_2(int a[], int left, int right, long long& countCompare, long long& countAssignment) {
+    // 1 phép so sánh điều kiện dừng
+    countCompare++;
+    if (left >= right) return;
+    int i, j, x;
+    // Các phép gán khởi tạo
+    x = a[(left + right) / 2];
+    i = left;
+    j = right;
+    countAssignment += 3;
+
+    // Vòng lặp phân hoạch
+    while (++countCompare && i <= j) {
+        // Đếm so sánh trong while a[i] < x
+        while (++countCompare && a[i] < x) {
+            i++;
+            countAssignment++; // i thay đổi
+        }
+
+        // Đếm so sánh trong while a[j] > x
+        while (++countCompare && a[j] > x) {
+            j--;
+            countAssignment++; // j thay đổi
+        }
+
+        countCompare++; // Cho lệnh if (i <= j)
+        if (i <= j) {
+            QuickSwap(a[i], a[j], countAssignment);
+            i++;
+            j--;
+            countAssignment += 2;
+        }
+    }
+    // Đệ quy
+    countCompare++; // Cho lệnh if (left < j)
+    if (left < j) QuickSort_2(a, left, j, countCompare, countAssignment);
+
+    countCompare++; // Cho lệnh if (i < right)
+    if (i < right) QuickSort_2(a, i, right, countCompare, countAssignment);
 }
 
+int b[MAX], c[MAX], nb, nc; // Ghi chú: 2 mảng này dùng để làm gì? 
+                            // tao ra 2 mang phu de merge la b va c
+                            // b co nb phan tu, c co nc phan tu
+void Distribute(int  a[], int N, int& nb, int& nc, int k) {
+    int i, pa, pb, pc; //Ghi chú: các biến này có ý nghĩa gì? 
+                        // i: bien dem
+                        // pa: vi tri hien tai trong mang a
+                        // pb: vi tri hien tai trong mang b
+                        // pc: vi tri hien tai trong mang c
+    pa = pb = pc = 0;   	while (pa < N) {
+        for (i = 0; (pa < N) && (i < k); i++, pa++, pb++) { //Ghi chú: vòng lặp này có ý nghĩa gì?  
+                                                            // sao chep k phan tu lien tuc tu a sang b
+            b[pb] = a[pa]; 
+        }
+        for (i = 0; (pa < N) && (i < k); i++, pa++, pc++) { //Ghi chú: vòng lặp này có ý nghĩa gì?  	 
+                                                            // sao chep k phan tu lien tuc tu a sang c
+            c[pc] = a[pa]; 
+        }
+    }
+    nb = pb; nc = pc;
+}
+void MergeSubarr(int a[], int nb, int nc, int& pa, int& pb, int& pc, int k) {
+    int rb, rc;  	rb = min(nb, pb + k); 	         rc = min(nc, pb + k);
+
+    while ((pb < rb) && (pc < rc)) {
+        if (b[pb] < c[pc])
+            a[pa++] = b[pb++];
+        else  a[pa++] = c[pc++];
+    }
+
+    while (pb < rb) {
+        a[pa++] = b[pb++];
+    }
+
+    while (pc < rc) {
+        a[pa++] = c[pc++];
+    }
+}
+void Merge(int a[], int nb, int nc, int k) {
+    int pa, pb, pc;  	pa = pb = pc = 0;
+
+    while ((pb < nb) && (pc < nc)) {
+        MergeSubarr(a, nb, nc, pa, pb, pc, k);
+    }
+
+    while (pb < nb) {
+        a[pa++] = b[pb++]; //Ghi chú: câu lệnh này có ý nghĩa gì? 
+                            // gan phan tu mang b sang mang a sau do tang position len 1
+    }
+
+    while (pc < nc) {
+        a[pa++] = c[pc++]; //Ghi chú: câu lệnh này có ý nghĩa gì? 
+                            // gan phan tu mang c sang mang a sau do tang position len 1
+    }
+}
+
+
+void MergeSort(int a[], int N, bool isAscending) {
+    int k = 1;
+
+    while (k < N) {
+        // Bước 1: phân phối mảng a vào b và c theo block k
+        Distribute(a, N, nb, nc, k);
+
+        // Bước 2: trộn b và c trở lại a theo block k
+        Merge(a, nb, nc, k);
+
+        // Tăng kích thước block
+        k *= 2;
+    }
+
+    // Nếu cần sắp xếp giảm dần
+    if (!isAscending) {
+        for (int i = 0; i < N / 2; i++) {
+            int temp = a[i];
+            a[i] = a[N - 1 - i];
+            a[N - 1 - i] = temp;
+        }
+    }
+}
 int main()
 {
     ifstream inputFile("data.txt");
@@ -181,11 +307,12 @@ int main()
     for (int i = 0; i < N; i++) {
         arr[i] = a[i];
     }
-    HeapSort(arr,N,1);
+    MergeSort(arr, N, 1);
 
     cout << "Day sau khi sap xep: ";
     for (int i = 0; i < N; i++) {
         cout << arr[i]<<" ";
     }
 }
+
 
