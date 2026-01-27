@@ -5,7 +5,7 @@
 #include<chrono>
 using namespace std::chrono;
 using namespace std;
-#define MAX 10000
+#define MAX 100000
 void Swap(int& a, int& b) {
     if (&a == &b) return;
     int temp = a;
@@ -262,8 +262,6 @@ void Merge(int a[], int nb, int nc, int k) {
                             // gan phan tu mang c sang mang a sau do tang position len 1
     }
 }
-
-
 void MergeSort(int a[], int N, bool isAscending) {
     int k = 1;
 
@@ -306,25 +304,48 @@ int main()
 
     cout << "Da doc " << a.size() << " phan tu tu file." << endl;
     int N = a.size();
-    int* arr = new int[N];
+    int* arr1 = new int[N];
+    int* arr2 = new int[N];
     for (int i = 0; i < N; i++) {
-        arr[i] = a[i];
+        arr1[i] = a[i];
+        arr2[i] = a[i];
     }
 
-    auto start = high_resolution_clock::now();
+    auto start1 = high_resolution_clock::now();
 
-    MergeSort(arr, N, 1);
+    QuickSort_1(arr1, 0, 1); // pivot o dau
 
-    auto end = high_resolution_clock::now();
-    auto duration = duration_cast<milliseconds>(end - start);
+    auto end1 = high_resolution_clock::now();
+    auto duration1 = duration_cast<milliseconds>(end1 - start1);
 
 
-    cout << "Day sau khi sap xep: ";
+
+   /* cout << "Day sau khi sap xep: ";
     for (int i = 0; i < N; i++) {
-        cout << arr[i]<<" ";
-    }
+        cout << arr1[i]<<" ";
+    }*/
     cout << endl;
-    cout << "Time: " << duration.count() << " ms\n";
+    cout << "Time: " << duration1.count() << " ms\n";
+
+    auto start2 = high_resolution_clock::now();
+
+    QuickSort_1(arr2, 0, N); // pivot o cuoi
+
+    auto end2 = high_resolution_clock::now();
+    auto duration2 = duration_cast<milliseconds>(end2 - start2);
+
+
+
+    /*cout << "Day sau khi sap xep: ";
+    for (int i = 0; i < N; i++) {
+        cout << arr2[i] << " ";
+    }*/
+    cout << endl;
+    cout << "Time: " << duration1.count() << " ms\n";
+    cout << "Time: " << duration2.count() << " ms\n";
+    if (duration1 < duration2) cout << "pivot dau nhanh hon" << endl;
+    else if (duration1 == duration2) cout << "2 pivot bang nhau \n";
+    else cout << "pivot giua nhanh hon\n";
 }
 
 
