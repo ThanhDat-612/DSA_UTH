@@ -285,6 +285,151 @@ void MergeSort(int a[], int N, bool isAscending) {
         }
     }
 }
+
+void InsertionSort(int a[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = a[i];
+        int j = i - 1;
+
+        // Dịch các phần tử lớn hơn key sang phải
+        while (j >= 0 && a[j] > key) {
+            a[j + 1] = a[j];
+            j--;
+        }
+
+        // Chèn key vào vị trí đúng
+        a[j + 1] = key;
+    }
+}
+
+int binarySearch(int a[], int key, int left, int right) {
+    while (left <= right) {
+        int mid = (left + right) / 2;
+
+        if (a[mid] > key)
+            right = mid - 1;
+        else
+            left = mid + 1;
+    }
+    return left; // vị trí chèn
+}
+
+void BinaryInsertionSort(int a[], int n) {
+    for (int i = 1; i < n; i++) {
+        int key = a[i];
+
+        // Tìm vị trí chèn bằng binary search
+        int pos = binarySearch(a, key, 0, i - 1);
+
+        // Dịch các phần tử sang phải
+        for (int j = i; j > pos; j--) {
+            a[j] = a[j - 1];
+        }
+
+        // Chèn key
+        a[pos] = key;
+    }
+}
+void InterchangeSort(int a[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = i + 1; j < n; j++) {
+            if (a[i] > a[j]) {
+                Swap(a[i], a[j]);
+            }
+        }
+    }
+}
+void BubbleSort(int a[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (a[j] > a[j + 1]) {
+                Swap(a[j], a[j + 1]);
+            }
+        }
+    }
+}
+
+void ShakerSort(int a[], int n) {
+    int left = 0;
+    int right = n - 1;
+    bool swapped = true;
+
+    while (left < right&& swapped) {
+        swapped = false;
+
+        // Quét từ trái sang phải
+        for (int i = left; i < right; i++) {
+            if (a[i] > a[i + 1]) {
+                swap(a[i], a[i + 1]);
+                swapped = true;
+            }
+        }
+        right--;
+
+        // Quét từ phải sang trái
+        for (int i = right; i > left; i--) {
+            if (a[i] < a[i - 1]) {
+                Swap(a[i], a[i - 1]);
+                swapped = true;
+            }
+        }
+        left++;
+    }
+}
+void ShellSort(int a[], int n) {
+    for (int gap = n / 2; gap > 0; gap /= 2) {
+        for (int i = gap; i < n; i++) {
+            int temp = a[i];
+            int j = i;
+
+            while (j >= gap && a[j - gap] > temp) {
+                a[j] = a[j - gap];
+                j -= gap;
+            }
+
+            a[j] = temp;
+        }
+    }
+}
+
+int getMax(int a[], int n) {
+    int max = a[0];
+    for (int i = 1; i < n; i++)
+        if (a[i] > max)
+            max = a[i];
+    return max;
+}
+void countingSort(int a[], int n, int exp) {
+    vector<int> output(n);
+    int count[10] = { 0 };
+
+    // Đếm số lần xuất hiện của chữ số
+    for (int i = 0; i < n; i++)
+        count[(a[i] / exp) % 10]++;
+
+    // Tính vị trí
+    for (int i = 1; i < 10; i++)
+        count[i] += count[i - 1];
+
+    // Xây dựng mảng output (đi từ phải sang trái → ổn định)
+    for (int i = n - 1; i >= 0; i--) {
+        int digit = (a[i] / exp) % 10;
+        output[count[digit] - 1] = a[i];
+        count[digit]--;
+    }
+
+    // Copy lại mảng a
+    for (int i = 0; i < n; i++)
+        a[i] = output[i];
+}
+void RadixSort(int a[], int n) {
+    int max = getMax(a, n);
+
+    for (int exp = 1; max / exp > 0; exp *= 10) {
+        countingSort(a, n, exp);
+    }
+}
+
 int main()
 {
     ifstream inputFile("data.txt");
@@ -313,26 +458,26 @@ int main()
 
     auto start1 = high_resolution_clock::now();
 
-    QuickSort_1(arr1, 0, 1); // pivot o dau
+    RadixSort(arr1, N); 
 
     auto end1 = high_resolution_clock::now();
     auto duration1 = duration_cast<milliseconds>(end1 - start1);
 
 
 
-   /* cout << "Day sau khi sap xep: ";
+    cout << "Day sau khi sap xep: ";
     for (int i = 0; i < N; i++) {
         cout << arr1[i]<<" ";
-    }*/
+    }
     cout << endl;
     cout << "Time: " << duration1.count() << " ms\n";
 
-    auto start2 = high_resolution_clock::now();
+    //auto start2 = high_resolution_clock::now();
 
-    QuickSort_1(arr2, 0, N); // pivot o cuoi
+    //QuickSort_1(arr2, 0, N); // pivot o cuoi
 
-    auto end2 = high_resolution_clock::now();
-    auto duration2 = duration_cast<milliseconds>(end2 - start2);
+    //auto end2 = high_resolution_clock::now();
+    //auto duration2 = duration_cast<milliseconds>(end2 - start2);
 
 
 
@@ -340,12 +485,12 @@ int main()
     for (int i = 0; i < N; i++) {
         cout << arr2[i] << " ";
     }*/
-    cout << endl;
+    /*cout << endl;
     cout << "Time: " << duration1.count() << " ms\n";
     cout << "Time: " << duration2.count() << " ms\n";
     if (duration1 < duration2) cout << "pivot dau nhanh hon" << endl;
     else if (duration1 == duration2) cout << "2 pivot bang nhau \n";
-    else cout << "pivot giua nhanh hon\n";
+    else cout << "pivot giua nhanh hon\n";*/
 }
 
 
